@@ -26,25 +26,25 @@ func Home(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// ChatgoResponse defines the response sent back from websocket
-type ChatgoResponse struct {
+// WsResponse defines the response sent back from websocket
+type WsResponse struct {
 	Action      string `json:"action"`
 	Message     string `json:"message"`
 	MessageType string `json:"message_type"`
 }
 
-func ChatgoEndpoint(w http.ResponseWriter, r *http.Request) {
-	chatgo, err := upgradeConnection.Upgrade(w, r, nil)
+func WsEndpoint(w http.ResponseWriter, r *http.Request) {
+	ws, err := upgradeConnection.Upgrade(w, r, nil)
 	if err != nil {
 		log.Println(err)
 	}
 
 	log.Println("Client connected to endpoint")
 
-	var response ChatgoResponse
+	var response WsResponse
 	response.Message = `<em><small>Connected to server </small></em>`
 
-	err = chatgo.WriteJSON(response)
+	err = ws.WriteJSON(response)
 	if err != nil {
 		log.Println(err)
 	}
